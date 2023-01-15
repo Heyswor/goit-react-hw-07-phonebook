@@ -1,63 +1,45 @@
-import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import css from './ContactForm.module.css';
-import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContact } from 'redux/selectors';
+import { addContact } from 'redux/contactsSlice';
 
-export function ContactForm({ onSumbit }) {
-  const [id, setId] = useState('');
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+export function ContactForm() {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContact);
+  const { register, handleSubmit, resetField } = useForm({
+    defaultValues: {
+      name: '',
+      number: '',
+    },
+  });
 
-  const handleChange = event => {
-    const { name, value, id } = event.currentTarget;
-    const uppercaseName = name.replace(
-      name.charAt(0),
-      name.charAt(0).toUpperCase()
+  const onHandleSubmit = values => {
+    const { name, number } = values;
+    const findedContact = contacts.find(contact =>
+      contact.name.toLowerCase().includes(name.toLowerCase())
     );
-    setId(id);
-    const dataFooName = 'set' + uppercaseName;
-    dataFoo[dataFooName](value);
-  };
-
-  const dataFoo = {
-    setId,
-    setName,
-    setNumber,
-  };
-
-  const data = {
-    id,
-    name,
-    number,
-  };
-
-  const handleSumbmit = e => {
-    e.preventDefault();
-
-    onSumbit(data);
-    reset();
-  };
-
-  const reset = () => {
-    setId('');
-    setName('');
-    setNumber('');
+    if (findedContact) {
+      alert(`${findedContact.name} is already in contacts`);
+      return;
+    } else {
+      dispatch(addContact(name, number));
+    }
+    resetField('name');
+    resetField('number');
   };
 
   return (
     <div>
-      <form onSubmit={handleSumbmit} className={css.contactForm}>
+      <form onSubmit={handleSubmit(onHandleSubmit)} className={css.contactForm}>
         <label htmlFor="">
           Name
           <input
             id={nanoid(4)}
             type="text"
             name="name"
-            value={name}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-            onChange={handleChange}
+            {...register('name', { required: 'This is required' })}
           />
         </label>
 
@@ -67,11 +49,10 @@ export function ContactForm({ onSumbit }) {
             id={nanoid(4)}
             type="tel"
             name="number"
-            value={number}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-            onChange={handleChange}
+            {...register('number', {
+              required: 'This is required',
+              minLength: 6,
+            })}
           />
         </label>
         <button type="submit">Add contact</button>
@@ -79,7 +60,3 @@ export function ContactForm({ onSumbit }) {
     </div>
   );
 }
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
