@@ -6,15 +6,19 @@ export const selectError = state => state.contact.error;
 
 export const selectStatusFilter = state => state.filter;
 
-export const selectFiltredContacts = state => {
+export const  selectFiltredContacts = state => {
   const contacts = selectItems(state);
   const lowercaseFilter = selectStatusFilter(state).toLocaleLowerCase();
-  if (contacts.length === 0) {
-    return;
-  } else {
-    const filtredContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(lowercaseFilter)
-    );
-    return filtredContacts;
-  }
+  // const filtredContacts = contacts.filter(contact =>
+  //   contact.name.toLowerCase().includes(lowercaseFilter)
+  // );
+  // return filtredContacts;
+    if (contacts.length < 1)  {
+      return;
+    } else {
+      const filtredContacts = contacts.filter(contact =>
+        contact.name.toLowerCase().includes(lowercaseFilter)
+      );
+      return filtredContacts;
+    }
 };
