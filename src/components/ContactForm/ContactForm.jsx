@@ -2,12 +2,12 @@ import { nanoid } from 'nanoid';
 import css from './ContactForm.module.css';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContact } from 'redux/selectors';
+import { selectContact } from 'redux/selectors';
 import { addContact } from 'redux/contactsSlice';
 
 export function ContactForm() {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContact);
+  const contacts = useSelector(selectContact);
   const { register, handleSubmit, resetField } = useForm({
     defaultValues: {
       name: '',
