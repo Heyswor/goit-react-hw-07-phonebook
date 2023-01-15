@@ -2,21 +2,23 @@ import { nanoid } from 'nanoid';
 import css from './ContactForm.module.css';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContact } from 'redux/selectors';
-import { addContact } from 'redux/contactsSlice';
+import { selectItems } from 'redux/selectors';
+
+import { addContacts } from 'redux/operations';
 
 export function ContactForm() {
   const dispatch = useDispatch();
-  const contacts = useSelector(selectContact);
+  const contacts = useSelector(selectItems);
   const { register, handleSubmit, resetField } = useForm({
     defaultValues: {
       name: '',
-      number: '',
+      phone: '',
     },
   });
 
   const onHandleSubmit = values => {
-    const { name, number } = values;
+    const { name } = values;
+    console.log();
     const findedContact = contacts.find(contact =>
       contact.name.toLowerCase().includes(name.toLowerCase())
     );
@@ -24,10 +26,10 @@ export function ContactForm() {
       alert(`${findedContact.name} is already in contacts`);
       return;
     } else {
-      dispatch(addContact(name, number));
+      dispatch(addContacts(values));
     }
     resetField('name');
-    resetField('number');
+    resetField('phone');
   };
 
   return (
@@ -49,7 +51,7 @@ export function ContactForm() {
             id={nanoid(4)}
             type="tel"
             name="number"
-            {...register('number', {
+            {...register('phone', {
               required: 'This is required',
               minLength: 6,
             })}

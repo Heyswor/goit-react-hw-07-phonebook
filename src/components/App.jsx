@@ -1,23 +1,35 @@
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectStatusFilter, selectFiltredContacts } from 'redux/selectors';
+import {
+  selectStatusFilter,
+  selectFiltredContacts,
+  selectIsLoading,
+  selectError,
+} from 'redux/selectors';
 import { updateFilter } from 'redux/filterSlice';
-import { deleteContact } from 'redux/contactsSlice';
+
+import { fetchContacts, deleteContacts } from 'redux/operations';
 
 export function App() {
   const dispatch = useDispatch();
   const filter = useSelector(selectStatusFilter);
   const filtredContacts = useSelector(selectFiltredContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const changeFilter = e => {
     dispatch(updateFilter(e.target.value));
   };
 
   const delContact = contactId => {
-    dispatch(deleteContact(contactId));
+    dispatch(deleteContacts(contactId));
   };
 
   return (
@@ -28,6 +40,7 @@ export function App() {
 
       <h2>Contacts</h2>
       <Filter filter={filter} onChange={changeFilter} />
+      {isLoading && !error && <b>Request in progress...</b>}
       <ContactList contacts={filtredContacts} deleteContact={delContact} />
     </div>
   );

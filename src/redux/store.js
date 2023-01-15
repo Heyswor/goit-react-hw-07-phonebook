@@ -18,7 +18,7 @@ const persistConfig = {
   key: 'root',
   storage,
 };
-    
+
 const rootReducer = combineReducers({
   contact: contactsReducer,
   filter: filterReducer,
