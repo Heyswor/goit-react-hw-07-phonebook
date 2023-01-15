@@ -5,7 +5,6 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectStatusFilter,
-  // selectFiltredContacts,
   selectIsLoading,
   selectError,
   selectItems,
@@ -17,7 +16,6 @@ import { fetchContacts, deleteContacts } from 'redux/operations';
 export function App() {
   const dispatch = useDispatch();
   const filter = useSelector(selectStatusFilter);
-  // const filtredContacts = useSelector(selectFiltredContacts);
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
   const contacts = useSelector(selectItems);
