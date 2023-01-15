@@ -20,6 +20,8 @@ export function App() {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
 
+  
+
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
