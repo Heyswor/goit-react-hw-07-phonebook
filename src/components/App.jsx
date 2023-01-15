@@ -8,6 +8,7 @@ import {
   selectFiltredContacts,
   selectIsLoading,
   selectError,
+  selectItems,
 } from 'redux/selectors';
 import { updateFilter } from 'redux/filterSlice';
 
@@ -16,11 +17,14 @@ import { fetchContacts, deleteContacts } from 'redux/operations';
 export function App() {
   const dispatch = useDispatch();
   const filter = useSelector(selectStatusFilter);
-  const filtredContacts = useSelector(selectFiltredContacts);
+  // const filtredContacts = useSelector(selectFiltredContacts);
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
-
-  
+  const contacts = useSelector(selectItems);
+  const lowercaseFilter = filter.toLowerCase();
+  const filtredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(lowercaseFilter)
+  );
 
   useEffect(() => {
     dispatch(fetchContacts());
