@@ -1,0 +1,46 @@
+@import-normalize; /* bring in normalize.css styles */
+
+body {
+  width: 500px;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  border: 1px solid black;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+ul {
+  list-style-type: none;
+  border-top: 1px dotted black;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1,
+h2 {
+  text-align: center;
+  border-top: 1px solid black;
+}
+
+input {
+  margin-left: 10px;
+}
+
+li {
+  border-top: 1px dotted black;
+}
+
+button {
+  cursor: pointer;
+}
